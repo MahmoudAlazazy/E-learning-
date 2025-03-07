@@ -1,117 +1,177 @@
-import 'package:education_app/constants/color.dart';
-import 'package:education_app/constants/icons.dart';
-import 'package:education_app/constants/size.dart';
-import 'package:education_app/screens/featuerd_screen.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'details_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
   static const routeName = "BaseScreen";
-
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _selectedIndex = 0;
-  String _token = ""; // Store token
+  String _token = "";
+  List<dynamic> _courses = [];
+  bool _isLoading = true;
+  String _errorMessage = "";
 
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    FeaturedScreen(),
-    FeaturedScreen(),
-    FeaturedScreen(),
-    FeaturedScreen(),
-  ];
   @override
-
   void initState() {
     super.initState();
-    _loadToken(); // Load token when screen initializes
+    _loadToken();
   }
 
   Future<void> _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _token = prefs.getString('token') ?? "No Token Found";
-    });
+    String? storedToken = prefs.getString('token');
 
-    print("Stored Token: $_token"); // Print token in console
+    if (storedToken != null && storedToken.isNotEmpty) {
+      setState(() {
+        _token = storedToken;
+      });
+      _fetchCourses();
+    } else {
+      setState(() {
+        _errorMessage = "No valid token found. Please log in again.";
+        _isLoading = false;
+      });
+    }
   }
 
+  Future<void> _fetchCourses() async {
+    if (_token.isEmpty) {
+      setState(() {
+        _errorMessage = "Authentication error: No token available.";
+        _isLoading = false;
+      });
+      return;
+    }
 
-  // child: Text(
-  // "Token: $_token",
-  // style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-  // textAlign: TextAlign.center,
-  // ),
+    try {
+      final response = await http.get(
+        Uri.parse('https://apis.mohamedelenany.com/public/api/getCourses'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+      );
 
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        setState(() {
+          _courses = responseData['courses'] ?? [];
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _errorMessage =
+          "Failed to load courses. Status Code: ${response.statusCode}";
+          _isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        _errorMessage =
+        "Error fetching courses. Check your internet connection.";
+        _isLoading = false;
+      });
+    }
+  }
 
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          "Courses",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        centerTitle: true,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: kPrimaryColor,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icFeatured,
-                height: kBottomNavigationBarItemSize,
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _errorMessage.isNotEmpty
+          ? Center(
+        child: Text(
+          _errorMessage,
+          style: TextStyle(color: Colors.red, fontSize: 16),
+        ),
+      )
+          : _courses.isEmpty
+          ? Center(child: Text("No courses available."))
+          : ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        itemCount: _courses.length,
+        itemBuilder: (context, index) {
+          final course = _courses[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailsScreen(
+                    title: course['title'],
+                    videoUrl: course['video_url'] ?? "No Video Available",
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    spreadRadius: 1,
+                  )
+                ],
               ),
-              icon: Image.asset(
-                icFeaturedOutlined,
-                height: kBottomNavigationBarItemSize,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: [
+                    Image.network(
+                      course['img'],
+                      height: 180,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                      ),
+                      child: Text(
+                        course['title'],
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              label: "Featured",
             ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icLearning,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icLearningOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "My Learning",
-            ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icWishlist,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icWishlistOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "Wishlist",
-            ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icSetting,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icSettingOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "Settings",
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }),
+          );
+        },
+      ),
     );
   }
 }
