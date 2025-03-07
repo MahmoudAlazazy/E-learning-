@@ -49,7 +49,7 @@ class _BaseScreenState extends State<BaseScreen> {
   // ),
 
 
-  
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

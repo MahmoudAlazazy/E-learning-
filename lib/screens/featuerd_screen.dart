@@ -6,8 +6,10 @@ import 'package:education_app/screens/details_screen.dart';
 import 'package:education_app/widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/search_testfield.dart';
+import 'dart:convert';
+
 
 class FeaturedScreen extends StatefulWidget {
   const FeaturedScreen({Key? key}) : super(key: key);
@@ -17,15 +19,33 @@ class FeaturedScreen extends StatefulWidget {
 }
 
 class _FeaturedScreenState extends State<FeaturedScreen> {
+  String _username = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = prefs.getString('user') != null
+          ? json.decode(prefs.getString('user')!)['name']
+          : "Guest";
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: Column(
-          children: const [
-            AppBar(),
-            Body(),
+          children: [
+            AppBar(username: _username),
+            const Body(),
           ],
         ),
       ),
@@ -112,7 +132,7 @@ class CategoryCard extends StatelessWidget {
               color: Colors.black.withOpacity(.1),
               blurRadius: 4.0,
               spreadRadius: .05,
-            ), //BoxShadow
+            ),
           ],
         ),
         child: Column(
@@ -141,8 +161,10 @@ class CategoryCard extends StatelessWidget {
 }
 
 class AppBar extends StatelessWidget {
+  final String username;
   const AppBar({
     Key? key,
+    required this.username,
   }) : super(key: key);
 
   @override
@@ -173,7 +195,7 @@ class AppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hello,\nGood Morning",
+                "Hello, $username",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(

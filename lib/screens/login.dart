@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
       _errorMessage = "";
     });
-
+    // server api
     try {
       final response = await http.post(
         Uri.parse('https://apis.mohamedelenany.com/public/api/login'),
@@ -40,6 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', responseData['token']);
+        await prefs.setString('user', json.encode(responseData['user']));
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => BaseScreen()),
