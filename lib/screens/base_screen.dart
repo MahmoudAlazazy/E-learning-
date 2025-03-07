@@ -41,6 +41,15 @@ class _BaseScreenState extends State<BaseScreen> {
     print("Stored Token: $_token"); // Print token in console
   }
 
+
+  // child: Text(
+  // "Token: $_token",
+  // style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+  // textAlign: TextAlign.center,
+  // ),
+
+
+  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
