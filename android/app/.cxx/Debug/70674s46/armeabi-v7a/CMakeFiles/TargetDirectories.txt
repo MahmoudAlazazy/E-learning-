@@ -1,0 +1,2 @@
+D:/Mahmoud/E-learning-/android/app/.cxx/Debug/70674s46/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Mahmoud/E-learning-/android/app/.cxx/Debug/70674s46/armeabi-v7a/CMakeFiles/rebuild_cache.dir

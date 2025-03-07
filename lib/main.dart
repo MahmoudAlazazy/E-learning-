@@ -1,7 +1,9 @@
 import 'package:education_app/screens/base_screen.dart';
+import 'package:education_app/screens/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+
   runApp(const MyApp());
 }
 
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Education App',
+      initialRoute:LoginScreen.routeName,
+      routes: {LoginScreen.routeName: (context) => LoginScreen()},
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',

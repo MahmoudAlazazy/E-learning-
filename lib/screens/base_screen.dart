@@ -3,9 +3,12 @@ import 'package:education_app/constants/icons.dart';
 import 'package:education_app/constants/size.dart';
 import 'package:education_app/screens/featuerd_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
+  static const routeName = "BaseScreen";
+
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
@@ -13,6 +16,8 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
+  String _token = ""; // Store token
+
 
   static const List<Widget> _widgetOptions = <Widget>[
     FeaturedScreen(),
@@ -21,6 +26,21 @@ class _BaseScreenState extends State<BaseScreen> {
     FeaturedScreen(),
   ];
   @override
+
+  void initState() {
+    super.initState();
+    _loadToken(); // Load token when screen initializes
+  }
+
+  Future<void> _loadToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _token = prefs.getString('token') ?? "No Token Found";
+    });
+
+    print("Stored Token: $_token"); // Print token in console
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
