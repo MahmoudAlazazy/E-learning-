@@ -1,7 +1,6 @@
-import 'package:education_app/screens/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:education_app/screens/base_screen.dart'; // Import BaseScreen
-
+import 'package:education_app/screens/base_screen.dart';
+import 'package:education_app/screens/signup.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,8 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  String _token = "";
+  bool _isObscured = true;
   bool _isLoading = false;
   String _errorMessage = "";
 
@@ -30,9 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final response = await http.post(
         Uri.parse('https://apis.mohamedelenany.com/public/api/login'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'email': _emailController.text,
           'password': _passwordController.text,
@@ -43,27 +39,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', responseData['token']); // Save token in cache
-
-        setState(() {
-          _token = responseData['token'];
-          _isLoading = false;
-        });
-        // Redirect to BaseScreen
+        await prefs.setString('token', responseData['token']);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BaseScreen()), // Navigate to BaseScreen
+          MaterialPageRoute(builder: (context) => BaseScreen()),
         );
-
       } else {
         setState(() {
           _errorMessage = responseData['message'] ?? 'Login failed. Please try again.';
-          _isLoading = false;
         });
       }
     } catch (error) {
       setState(() {
         _errorMessage = 'An error occurred. Please check your internet connection.';
+      });
+    } finally {
+      setState(() {
         _isLoading = false;
       });
     }
@@ -72,81 +63,80 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                  "Welcome Back!",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple, Colors.orangeAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              SizedBox(height: 20),
-              _buildTextField(Icons.email, "Email", controller: _emailController),
-              _buildTextField(Icons.lock, "Password", isPassword: true, controller: _passwordController),
-              SizedBox(height: 20),
-              if (_errorMessage.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    _errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              if (_token.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.green)
+              elevation: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(25),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Get Started",
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                     ),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Login Successful!",
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Your token:",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 5),
-                        SelectableText(
-                          _token,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
+                    SizedBox(height: 10),
+                    Text(
+                      "Let's get started by filling out the form below.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
-                  ),
+                    SizedBox(height: 20),
+                    _buildTextField("Email", controller: _emailController),
+                    _buildTextField("Password", isPassword: true, controller: _passwordController),
+                    SizedBox(height: 15),
+                    if (_errorMessage.isNotEmpty)
+                      Text(
+                        _errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      child: _isLoading
+                          ? CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                        "Login Account",
+                        style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpScreen()),
+                        );
+                      },
+                      child: Text(
+                        "Don't have an account? Sign Up here",
+                        style: TextStyle(color: Colors.deepPurple, fontSize: 14),
+                      ),
+                    ),
+                  ],
                 ),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _login,
-                child: _isLoading
-                    ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2)
-                )
-                    : Text("Login"),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()),
-                  );
-                },
-                child: Text("Don't have an account? Sign up"),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -154,20 +144,40 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildTextField(
-      IconData icon,
-      String hint,
-      {bool isPassword = false,
-        required TextEditingController controller}
-      ) {
+      String hint, {
+        bool isPassword = false,
+        required TextEditingController controller,
+      }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword ? _isObscured : false,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon),
+          suffixIcon: isPassword
+              ? IconButton(
+            icon: Icon(
+              _isObscured ? Icons.visibility_off : Icons.visibility,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              setState(() {
+                _isObscured = !_isObscured;
+              });
+            },
+          )
+              : null,
           hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          filled: true,
+          fillColor: Colors.grey[200],
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide(color: Colors.grey[300]! ),
+          ),
         ),
       ),
     );
