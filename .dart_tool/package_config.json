@@ -333,9 +333,9 @@
     },
     {
       "name": "video_player",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/video_player-2.9.3",
+      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/video_player-2.7.0",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "2.18"
     },
     {
       "name": "video_player_android",
@@ -386,7 +386,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-03-07T23:03:35.342017Z",
+  "generated": "2025-03-07T23:49:56.739563Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/flutter",
