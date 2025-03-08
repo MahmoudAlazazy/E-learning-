@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Education App',
       initialRoute:SplashScreen.routeName,
-      routes: {LoginScreen.routeName: (context) => LoginScreen(),
+      routes: {
         SplashScreen.routeName: (context) => SplashScreen()
       },
       theme: ThemeData(
