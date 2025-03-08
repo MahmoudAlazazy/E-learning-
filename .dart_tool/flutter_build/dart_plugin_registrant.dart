@@ -10,12 +10,17 @@ import 'package:shared_preferences_android/shared_preferences_android.dart';
 import 'package:video_player_android/video_player_android.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
 import 'package:shared_preferences_linux/shared_preferences_linux.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 @pragma('vm:entry-point')
 class _PluginRegistrant {
@@ -62,6 +67,15 @@ class _PluginRegistrant {
 
     } else if (Platform.isLinux) {
       try {
+        PackageInfoPlusLinuxPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`package_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         PathProviderLinux.registerWith();
       } catch (err) {
         print(
@@ -75,6 +89,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`shared_preferences_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        WakelockPlusLinuxPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`wakelock_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
@@ -98,7 +121,25 @@ class _PluginRegistrant {
         );
       }
 
+      try {
+        WakelockPlusMacOSPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`wakelock_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
     } else if (Platform.isWindows) {
+      try {
+        PackageInfoPlusWindowsPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`package_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
       try {
         PathProviderWindows.registerWith();
       } catch (err) {
@@ -113,6 +154,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`shared_preferences_windows` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        WakelockPlusWindowsPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`wakelock_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
