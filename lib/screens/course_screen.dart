@@ -35,11 +35,11 @@ class _CourseScreenState extends State<CourseScreen> {
                       ),
                       Positioned(
                         left: 0,
-                        child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
-                          height: 35,
-                          width: 35,
-                          onTap: () => Navigator.pop(context),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          iconSize: 35, // تحديد الحجم بدل height وwidth
+                          color: Colors.black, // لون الأيقونة (يمكن تعديله)
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ),
                     ],
@@ -88,7 +88,7 @@ class CourseContainer extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => DetailsScreen(
-                    title: course.name,
+                    title: course.name, videoUrl: '',
                   ))),
       child: Container(
         decoration: BoxDecoration(
