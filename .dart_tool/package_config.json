@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "args",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.6.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.6.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -27,7 +27,7 @@
     },
     {
       "name": "chewie",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/chewie-1.10.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/chewie-1.10.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -57,7 +57,7 @@
     },
     {
       "name": "dbus",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/dbus-0.7.11",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/dbus-0.7.11",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -195,9 +195,9 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/lints-5.0.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/lints-5.1.1",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.6"
     },
     {
       "name": "matcher",
@@ -219,19 +219,19 @@
     },
     {
       "name": "nested",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "package_info_plus",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/package_info_plus-8.3.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/package_info_plus-8.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "package_info_plus_platform_interface",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/package_info_plus_platform_interface-3.2.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/package_info_plus_platform_interface-3.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -261,7 +261,7 @@
     },
     {
       "name": "petitparser",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-6.1.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-6.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -279,7 +279,7 @@
     },
     {
       "name": "provider",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.2",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -387,9 +387,9 @@
     },
     {
       "name": "video_player_android",
-      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/video_player_android-2.7.16",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/video_player_android-2.8.1",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.6"
     },
     {
       "name": "video_player_avfoundation",
@@ -417,13 +417,13 @@
     },
     {
       "name": "wakelock_plus",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/wakelock_plus-1.2.10",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/wakelock_plus-1.2.10",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "wakelock_plus_platform_interface",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/wakelock_plus_platform_interface-1.2.2",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/wakelock_plus_platform_interface-1.2.2",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -435,7 +435,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.11.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.11.0",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -447,7 +447,7 @@
     },
     {
       "name": "xml",
-      "rootUri": "file:///C:/Users/Mahmoud%20Elnagar/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.5.0",
+      "rootUri": "file:///C:/Users/mahmo/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -458,11 +458,7 @@
       "languageVersion": "3.5"
     }
   ],
-<<<<<<< HEAD
-  "generated": "2025-03-08T00:08:56.763789Z",
-=======
-  "generated": "2025-03-08T00:09:36.541289Z",
->>>>>>> 43c34708fd774c2667087c70b6af0a603f00fc20
+  "generated": "2025-03-08T00:27:29.654836Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/flutter",

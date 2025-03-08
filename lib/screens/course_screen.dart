@@ -88,15 +88,8 @@ class CourseContainer extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => DetailsScreen(
-<<<<<<< HEAD
                     title: course.name, videoUrl: '',
                   ))),
-=======
-                    title: course.name,
-                videoUrl: course.videoUrl,  // Pass the video URL here
-
-              ))),
->>>>>>> 43c34708fd774c2667087c70b6af0a603f00fc20
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

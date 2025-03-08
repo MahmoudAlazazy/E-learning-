@@ -1,5 +1,6 @@
 import 'package:education_app/screens/base_screen.dart';
 import 'package:education_app/screens/login.dart';
+import 'package:education_app/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,8 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Education App',
-      initialRoute:LoginScreen.routeName,
-      routes: {LoginScreen.routeName: (context) => LoginScreen()},
+      initialRoute:SplashScreen.routeName,
+      routes: {LoginScreen.routeName: (context) => LoginScreen(),
+        SplashScreen.routeName: (context) => SplashScreen()
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
