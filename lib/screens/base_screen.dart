@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'details_screen.dart';
+import 'login.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -35,16 +36,21 @@ class _BaseScreenState extends State<BaseScreen> {
       _fetchCourses();
     } else {
       setState(() {
-        _errorMessage = "No valid token found. Please log in again.";
+        _errorMessage = "لم يتم العثور على رمز صالح. الرجاء تسجيل الدخول مرة أخرى.";
         _isLoading = false;
       });
     }
   }
 
   Future<void> _fetchCourses() async {
+    setState(() {
+      _isLoading = true; // Show loading indicator while fetching
+      _errorMessage = "";
+    });
+
     if (_token.isEmpty) {
       setState(() {
-        _errorMessage = "Authentication error: No token available.";
+        _errorMessage = "خطأ في المصادقة: لا يوجد رمز متاح.";
         _isLoading = false;
       });
       return;
@@ -67,35 +73,56 @@ class _BaseScreenState extends State<BaseScreen> {
         });
       } else {
         setState(() {
-          _errorMessage =
-          "Failed to load courses. Status Code: ${response.statusCode}";
+          _errorMessage = "فشل تحميل الدورات. كود الخطأ: ${response.statusCode}";
           _isLoading = false;
         });
       }
     } catch (error) {
       setState(() {
-        _errorMessage =
-        "Error fetching courses. Check your internet connection.";
+        _errorMessage = "خطأ أثناء جلب الدورات. تحقق من اتصالك بالإنترنت.";
         _isLoading = false;
       });
     }
   }
 
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Clear user session data
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false, // Remove all previous routes
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.black, // Dark background for a modern feel
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 0,
         title: Text(
-          "Courses",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          "الدورات المتاحة",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh, color: Colors.white),
+            onPressed: _fetchCourses, // Reload data from API
+            tooltip: "تحديث البيانات",
+          ),
+          IconButton(
+            icon: Icon(Icons.logout, color: Colors.white),
+            onPressed: _logout, // Logout function
+            tooltip: "تسجيل الخروج",
+          ),
+        ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Colors.amber[700]))
           : _errorMessage.isNotEmpty
           ? Center(
         child: Text(
@@ -104,73 +131,82 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
       )
           : _courses.isEmpty
-          ? Center(child: Text("No courses available."))
-          : ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        itemCount: _courses.length,
-        itemBuilder: (context, index) {
-          final course = _courses[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsScreen(
-                    title: course['title'],
-                    videoUrl: course['video_url'] ?? "No Video Available",
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 8,
-                    spreadRadius: 1,
-                  )
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Stack(
-                  alignment: Alignment.bottomLeft,
-                  children: [
-                    Image.network(
-                      course['img'],
-                      height: 180,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+          ? Center(child: Text("لا توجد دورات متاحة.", style: TextStyle(color: Colors.white, fontSize: 18)))
+          : Padding(
+        padding: EdgeInsets.all(16),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // 2 columns
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.8, // Adjust aspect ratio for better visuals
+          ),
+          itemCount: _courses.length,
+          itemBuilder: (context, index) {
+            final course = _courses[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                      title: course['title'],
+                      videoUrl: course['video_url'] ?? "No Video Available",
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                      ),
-                      child: Text(
-                        course['title'],
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 8,
+                      spreadRadius: 1,
                     )
                   ],
                 ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                            image: DecorationImage(
+                              image: NetworkImage(course['img']),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          course['title'],
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

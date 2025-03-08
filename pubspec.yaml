@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.5.2
   flutter_secure_storage: ^8.0.0
   dio: ^5.3.0
+  audioplayers: ^6.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,7 +67,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icons/
-
+    - assets/sounds/login_sound.mp3
 
   #   - images/a_dot_ham.jpeg
 
