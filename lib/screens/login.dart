@@ -53,7 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       setState(() {
-        _errorMessage = 'An error occurred. Please check your internet connection.';
+        _errorMessage = '{$error}';
+        // 'An error occurred. Please check your internet connection.';
       });
     } finally {
       setState(() {
